@@ -1,5 +1,6 @@
 module Info
   ( getMem
+  , showMemMB
   ) where
 
 import Control.Exception (catch, IOException)
@@ -34,3 +35,6 @@ getMem = do
                      [(n, _)] -> Just n
                      _        -> Nothing
       _         -> Nothing
+
+showMemMB :: Integer -> Integer
+showMemMB kb = kb `div` 1024
