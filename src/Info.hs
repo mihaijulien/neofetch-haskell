@@ -3,6 +3,7 @@ module Info
   , showMemMB
   , getCurrentUser
   , getSystemName
+  , getCPUInfo
   ) where
 
 import Control.Exception (catch, IOException)
@@ -51,3 +52,14 @@ getSystemName :: IO (Maybe String)
 getSystemName = do
   hostname <- readProcess "hostname" [] []
   return $ if null hostname then Nothing else Just hostname
+
+getCPUInfo :: IO (Maybe String)
+getCPUInfo = do
+  cpu <- readFileSafe "/proc/cpuinfo"
+  return $ do
+    content <- cpu
+    let ls = lines content
+        model = [ drop (length "model name\t: ") l | l <- ls, "model name" `isPrefixOf` l]
+    case model of
+      (x:_) -> Just x
+      _     -> Nothing

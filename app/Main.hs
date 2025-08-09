@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Info (getMem, showMemMB, getCurrentUser, getSystemName)
+import Info (getMem, showMemMB, getCurrentUser, getSystemName, getCPUInfo)
 import Data.Maybe (fromMaybe)
 
 main :: IO ()
@@ -8,6 +8,9 @@ main = do
   currentUser <- getCurrentUser
   systenName <- getSystemName
   putStrLn $ fromMaybe "unknwon" currentUser ++ "@" ++ fromMaybe "unknown" systenName
+  putStrLn "-----------------"
+  cpu <- getCPUInfo
+  putStrLn $ "CPU: " ++ fromMaybe "Unknown" cpu
   memory <- getMem
   case memory of
     Just memKb -> putStrLn $ "Memory (total): " ++ show (showMemMB memKb) ++ " MB"
