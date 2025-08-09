@@ -1,11 +1,14 @@
 module Info
   ( getMem
   , showMemMB
+  , getCurrentUser
+  , getSystemName
   ) where
 
 import Control.Exception (catch, IOException)
 import System.Directory (doesFileExist)
 import Data.List (isPrefixOf)
+import System.Process
 
 readFileSafe :: FilePath -> IO (Maybe String)
 readFileSafe p = do
@@ -38,3 +41,13 @@ getMem = do
 
 showMemMB :: Integer -> Integer
 showMemMB kb = kb `div` 1024
+
+getCurrentUser :: IO (Maybe String)
+getCurrentUser = do
+  user <- readProcess "whoami" [] []
+  return $ if null user then Nothing else Just (init user) -- init removes the newline char
+
+getSystemName :: IO (Maybe String)
+getSystemName = do
+  hostname <- readProcess "hostname" [] []
+  return $ if null hostname then Nothing else Just hostname
