@@ -4,6 +4,8 @@ module Info
   , getCurrentUser
   , getSystemName
   , getCPUInfo
+  , getUptime
+  , getOSversion
   ) where
 
 import Control.Exception (catch, IOException)
@@ -63,3 +65,19 @@ getCPUInfo = do
     case model of
       (x:_) -> Just x
       _     -> Nothing
+
+getUptime :: IO (String)
+getUptime = readProcess "uptime" ["-p"] []
+
+getOSversion :: IO (Maybe String)
+getOSversion = do
+    os <- readFileSafe "/etc/os-release"
+    return $ do
+      content <- os
+      let ls = lines content
+          pretty = [ drop (length "PRETTY_NAME=") l | l <- ls, "PRETTY_NAME=" `isPrefixOf` l ]
+          trimQuotes ('"':rest) | last rest == '"' = init rest
+          trimQuotes s = s
+      case pretty of
+        (x:_) -> Just (trimQuotes x)
+        _     -> Nothing

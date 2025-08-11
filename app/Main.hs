@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Info (getMem, showMemMB, getCurrentUser, getSystemName, getCPUInfo)
+import Info (getMem, showMemMB, getCurrentUser, getSystemName, getCPUInfo, getUptime, getOSversion)
 import Data.Maybe (fromMaybe)
 
 main :: IO ()
@@ -9,6 +9,10 @@ main = do
   systenName <- getSystemName
   putStrLn $ fromMaybe "unknwon" currentUser ++ "@" ++ fromMaybe "unknown" systenName
   putStrLn "-----------------"
+  os <- getOSversion
+  putStrLn $ "OS: " ++ fromMaybe "Unknown" os
+  uptime <- getUptime
+  putStrLn $ "Uptime: " ++ uptime
   cpu <- getCPUInfo
   putStrLn $ "CPU: " ++ fromMaybe "Unknown" cpu
   memory <- getMem
