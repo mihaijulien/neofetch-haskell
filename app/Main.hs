@@ -3,21 +3,23 @@ module Main (main) where
 import Info (getMem, showMemMB, getCurrentUser, getSystemName, getCPUInfo, getUptime, getOSversion, getGpuInfo)
 import Data.Maybe (fromMaybe)
 
+-- https://stackoverflow.com/questions/21220142/change-color-of-a-string-haskell
+
 main :: IO ()
 main = do
   currentUser <- getCurrentUser
   systenName <- getSystemName
-  putStrLn $ fromMaybe "unknwon" currentUser ++ "@" ++ fromMaybe "unknown" systenName
+  putStrLn $ "\ESC[31m" ++ fromMaybe "unknwon" currentUser ++ "\ESC[37m@\ESC[31m" ++ fromMaybe "unknown" systenName
   putStrLn "-----------------"
   os <- getOSversion
-  putStrLn $ "OS: " ++ fromMaybe "Unknown" os
+  putStrLn $ "\ESC[31mOS\ESC[37m: " ++ fromMaybe "Unknown" os
   uptime <- getUptime
-  putStrLn $ "Uptime: " ++ uptime
+  putStrLn $ "\ESC[31mUptime\ESC[37m: " ++ uptime
   cpu <- getCPUInfo
-  putStrLn $ "CPU: " ++ fromMaybe "Unknown" cpu
+  putStrLn $ "\ESC[31mCPU\ESC[37m: " ++ fromMaybe "Unknown" cpu
   gpu <- getGpuInfo
-  putStrLn $ "GPU: " ++ fromMaybe "Unknwon" gpu
+  putStrLn $ "\ESC[31mGPU\ESC[37m: " ++ fromMaybe "Unknwon" gpu
   memory <- getMem
   case memory of
-    Just memKb -> putStrLn $ "Memory (total): " ++ show (showMemMB memKb) ++ " MB"
+    Just memKb -> putStrLn $ "\ESC[31mMemory (total)\ESC[37m: " ++ show (showMemMB memKb) ++ " MB"
     Nothing    -> putStrLn $ "Could not retrieve memory info"
