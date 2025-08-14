@@ -6,6 +6,7 @@ module Info
   , getCPUInfo
   , getUptime
   , getOSversion
+  , getGpuInfo
   ) where
 
 import Control.Exception (catch, IOException)
@@ -81,3 +82,8 @@ getOSversion = do
       case pretty of
         (x:_) -> Just (trimQuotes x)
         _     -> Nothing
+
+getGpuInfo :: IO (Maybe String)
+getGpuInfo = do
+  output <- (readProcess "sh" ["-c", "lspci 2>/dev/null | grep -Ei 'vga|3d|display'"] "")
+  return $ if null output then Nothing else Just output
