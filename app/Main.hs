@@ -1,7 +1,16 @@
 module Main (main) where
 
-import Info (getMem, showMemMB, getCurrentUser, getSystemName, getCPUInfo, getUptime, getOSversion, getGpuInfo)
 import Data.Maybe (fromMaybe)
+import Info
+  ( getMem
+  , showMemMB
+  , getCurrentUser
+  , getSystemName
+  , getCPUInfo
+  , getUptime
+  , getOSversion
+  , getGpuInfo
+  )
 
 -- https://stackoverflow.com/questions/21220142/change-color-of-a-string-haskell
 
